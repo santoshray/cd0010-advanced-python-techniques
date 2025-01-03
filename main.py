@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 """Explore a dataset of near-Earth objects and their close approaches to Earth.
 
 See `README.md` for a detailed discussion of this project.
@@ -382,7 +383,21 @@ def main():
     args = parser.parse_args()
 
     # Extract data from the data files into structured Python objects.
+
     database = NEODatabase(load_neos(args.neofile), load_approaches(args.cadfile))
+    cerberus = database.get_neo_by_designation('1865')
+    print("cerberus:".format(cerberus))
+    print(cerberus.designation)
+    print(cerberus.name)
+    print(cerberus.diameter)
+    print(cerberus.hazardous)
+
+    bs_2020 = database.get_neo_by_designation('2020 BS')
+    print("bs_2020 :".format(bs_2020))
+    print(bs_2020.designation)
+    print(bs_2020.name)
+    print(bs_2020.diameter)
+    print(bs_2020.hazardous)    
 
     # Run the chosen subcommand.
     if args.cmd == 'inspect':
@@ -395,3 +410,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
