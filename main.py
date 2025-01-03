@@ -385,19 +385,6 @@ def main():
     # Extract data from the data files into structured Python objects.
 
     database = NEODatabase(load_neos(args.neofile), load_approaches(args.cadfile))
-    cerberus = database.get_neo_by_designation('1865')
-    print("cerberus:".format(cerberus))
-    print(cerberus.designation)
-    print(cerberus.name)
-    print(cerberus.diameter)
-    print(cerberus.hazardous)
-
-    bs_2020 = database.get_neo_by_designation('2020 BS')
-    print("bs_2020 :".format(bs_2020))
-    print(bs_2020.designation)
-    print(bs_2020.name)
-    print(bs_2020.diameter)
-    print(bs_2020.hazardous)    
 
     # Run the chosen subcommand.
     if args.cmd == 'inspect':
@@ -408,6 +395,28 @@ def main():
         NEOShell(database, inspect_parser, query_parser, aggressive=args.aggressive).cmdloop()
 
 
+def dummy_main():
+    """Run the main script."""
+    parser, inspect_parser, query_parser = make_parser()
+    args = parser.parse_args()
+
+    # Extract data from the data files into structured Python objects.
+
+    #database = NEODatabase(load_neos(args.neofile), load_approaches(args.cadfile))
+
+    # Run the chosen subcommand.
+    if args.cmd == 'inspect':
+        print("pdes={} , name={} , verbose={}".format(args.pdes,args.name,args.verbose))
+        #inspect(database, pdes=args.pdes, name=args.name, verbose=args.verbose)
+    elif args.cmd == 'query':
+        print("query = {}".format(query))
+        #query(database, args)
+    elif args.cmd == 'interactive':
+        pass        
+        #NEOShell(database, inspect_parser, query_parser, aggressive=args.aggressive).cmdloop()
+
+
 if __name__ == '__main__':
     main()
+    #dummy_main()
 

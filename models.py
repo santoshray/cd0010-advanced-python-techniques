@@ -17,7 +17,7 @@ quirks of the data set, such as missing names and unknown diameters.
 
 You'll edit this file in Task 1.
 """
-from helpers import cd_to_datetime, datetime_to_str
+from helpers import cd_to_datetime, datetime_to_str ,cd_to_date
 
 
 class NearEarthObject:
@@ -70,8 +70,8 @@ class NearEarthObject:
             isharzardous = ""
         else:
             isharzardous = "not"
-        return f"NearEarthObject {self.designation} {self.name} has a diameter of {self.diameter} km" \
-               f"and is {isharzardous} potentially hazardous"
+        return f"NEO {self.designation} ({self.name}) has a diameter of {self.diameter} km" \
+               f" and is {isharzardous} potentially hazardous"
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
@@ -114,6 +114,11 @@ class CloseApproach:
         self.neo = neo
 
     @property
+    def date(self):
+
+        return cd_to_date(self.time)
+
+    @property
     def time_str(self):
         """Return a formatted representation of this `CloseApproach`'s approach time.
 
@@ -138,8 +143,8 @@ class CloseApproach:
         # TODO: Use this object's attributes to return a human-readable string representation.
         # The project instructions include one possibility. Peek at the __repr__
         # method for examples of advanced string formatting.
-        return f"On {self.time_str} ,' {self.neo.designation} {self.neo.name}' approaches Earth at a  \
-                distance of {self.distance} au and a velocity of {self.velocity}"
+        return f"On {self.time_str} ,' {self.neo.designation} {self.neo.name}' approaches Earth at a "  \
+                f"distance of {self.distance:.2f} au and a velocity of {self.velocity:.2f} km/s."
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""

@@ -109,8 +109,38 @@ def create_filters(
     :return: A collection of filters for use with `query`.
     """
     # TODO: Decide how you will represent your filters.
-    return ()
+    query_dict = {}
+    if date != None :
+        query_dict['date'] = date
+    
+    if start_date != None:
+        query_dict['start_date'] = start_date
 
+    if end_date !=None:
+        query_dict['end_date'] = end_date
+
+    if velocity_min != None:
+        query_dict['velocity_min'] = velocity_min
+    
+    if velocity_max !=None :
+        query_dict['velocity_max'] = velocity_max
+
+    if diameter_min != None:
+        query_dict['diameter_min'] = diameter_min
+    
+    if diameter_max != None:
+        query_dict['diameter_max'] = diameter_max
+    
+    if hazardous !=None:
+        query_dict['hazardous'] = hazardous
+
+    if distance_min != None:
+        query_dict['distance_min'] = distance_min
+    
+    if distance_max != None:
+        query_dict['distance_max'] = distance_max 
+
+    return query_dict
 
 def limit(iterator, n=None):
     """Produce a limited stream of values from an iterator.

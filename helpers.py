@@ -29,6 +29,9 @@ def cd_to_datetime(calendar_date):
     return datetime.datetime.strptime(calendar_date, "%Y-%b-%d %H:%M")
 
 
+def cd_to_date(date_time):
+    return datetime.date(date_time.year,date_time.month,date_time.day)
+
 def datetime_to_str(dt):
     """Convert a naive Python datetime into a human-readable string.
 
