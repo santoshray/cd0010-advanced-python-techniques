@@ -21,6 +21,7 @@ class NEODatabase:
     help fetch NEOs by primary designation or by name and to help speed up
     querying for close approaches that match criteria.
     """
+
     def __init__(self, neos, approaches):
         """Create a new `NEODatabase`.
 
@@ -43,7 +44,6 @@ class NEODatabase:
         self._approaches = approaches
 
 
-        # TODO: What additional auxiliary data structures will be useful?
         # loop through all close approaches objects and create a dictionary.
         #  {
         #     "pdes1":[ca11,ca12 ..], 
@@ -89,7 +89,6 @@ class NEODatabase:
         :param designation: The primary designation of the NEO to search for.
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
-        # TODO: Fetch an NEO by its primary designation.
         if designation in self.neo_ca_dict.keys():
             neo_by_designation = self.neo_ca_dict[designation][0].neo
         else:
@@ -111,7 +110,6 @@ class NEODatabase:
         :param name: The name, as a string, of the NEO to search for.
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
-        # TODO: Fetch an NEO by its name.
         try:
             neo = self.neo_name_dict[name]
         except:
@@ -134,16 +132,16 @@ class NEODatabase:
         :param filters: A collection of filters capturing user-specified criteria.
         :return: A stream of matching `CloseApproach` objects.
         """
-        # TODO: Generate `CloseApproach` objects that match all of the filters.
+        def check_filter_condition(approach,filters):
+            """Check if the close approach meet all the filter conditions."""
+            flag = True
+            for f in filters:
+                if  f(approach) == False:
+                    return False
+            return flag
+
         for approach in self._approaches:
             if check_filter_condition(approach,filters):
                 yield approach
         
-@staticmethod
-def check_filter_condition(approach,filters):
-    flag = True
-    for f in filters:
-        if  f(approach) == False:
-            return False
-    return flag
 

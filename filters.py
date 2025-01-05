@@ -39,6 +39,7 @@ class AttributeFilter:
     Concrete subclasses can override the `get` classmethod to provide custom
     behavior to fetch a desired attribute from the given `CloseApproach`.
     """
+
     def __init__(self, op, value):
         """Construct a new `AttributeFilter` from an binary predicate and a reference value.
 
@@ -70,31 +71,67 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Representation of the comparion of CloseApporach attribute."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 class DateFilter(AttributeFilter):
+    """DateFilter derived from AttributeFilter.
+
+    DateFilter to compare the date attribute of close approach with the 
+    arguement in command line. 
+    """
+
     @classmethod
     def get(cls,approach):
+        """Return the date from time attribute."""
         return approach.time.date()
     
 class HazardousFilter(AttributeFilter):
+    """HazardousFilter derived from AttributeFilter.
+       
+    HazardousFilter to compare the neo.hazardous attribute of close approach
+    with the   arguement in command line. 
+    """
+
     @classmethod
     def get(cls,approach):
+        """Return hazardous attribute in neo."""
         return approach.neo.hazardous
 
 class VelocityFilter(AttributeFilter):
+    """VelocityFilter derived from AttributeFilter.
+
+    VelocityFilter to compare the velocity attribute of close approach with the 
+    arguement in command line 
+    """
+
     @classmethod
     def get(cls,approach):
+        """Return velocity attribute from CloseApproach object."""
         return approach.velocity
 
 class DistanceFilter(AttributeFilter):
+    """DistanceFilter derived from AttributeFilter.
+
+    DistanceFilter to compare the distance attribute of close approach with the 
+    arguement in command line 
+    """
+
     @classmethod
     def get(cls,approach):
+        """Return the distance attribute from the CloseApproach object."""
         return approach.distance
 
 class DiameterFilter(AttributeFilter):
+    """DiameterFilter derived from AttributeFilter.
+
+    DiameterFilter to compare the neo.diameter attribute of close approach with the 
+    arguement in command line. 
+    """
+
     @classmethod
     def get(cls,approach):
+        """Return the diameter attribute of the neo object."""
         return approach.neo.diameter
 
 
@@ -165,7 +202,6 @@ def create_filters(
     if hazardous != None:
         filters.append(HazardousFilter(operator.eq, hazardous))
 
-    # TODO: Decide how you will represent your filters.
     return filters
 
 
@@ -178,6 +214,7 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    # TODO: Produce at most `n` values from the given iterator.
-
+    if n == 0 or n is None:
+        return iterator
+    
     return itertools.islice(iterator, n)

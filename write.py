@@ -28,11 +28,12 @@ def write_to_csv(results, filename):
         'datetime_utc', 'distance_au', 'velocity_km_s',
         'designation', 'name', 'diameter_km', 'potentially_hazardous'
     )
-    # TODO: Write the results to a CSV file, following the specification in the instructions.
+
     with open(filename, 'w', newline='') as outfile:
         writer = csv.writer(outfile)
         writer.writerow(fieldnames)
         for r in results:
+            
             row_to_write = (r.time_str,r.distance,r.velocity,r._designation,r.neo.name,r.neo.diameter,r.neo.hazardous)
             writer.writerow(row_to_write)
     outfile.close()
@@ -48,8 +49,7 @@ def write_to_json(results, filename):
     :param results: An iterable of `CloseApproach` objects.
     :param filename: A Path-like object pointing to where the data should be saved.
     """
-
-    # TODO: Write the results to a JSON file, following the specification in the instructions.
+    #Write the results to a JSON file, following the specification in the instructions.
     #{
     #"datetime_utc": "2025-11-30 02:18",
     #"distance_au": 0.397647483265833,
@@ -60,9 +60,7 @@ def write_to_json(results, filename):
     #  "diameter_km": 16.84,
     #  "potentially_hazardous": false
     #}
-
     f= open(filename, 'w')
     r_out = [approach.get_obj() for approach in results]
-    print(r_out)
     json.dump(r_out,f,indent =2)
     f.close()

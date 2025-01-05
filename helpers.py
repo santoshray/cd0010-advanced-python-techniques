@@ -12,7 +12,6 @@ provide that level of resolution, so the output format also will not.
 """
 import datetime
 
-
 def cd_to_datetime(calendar_date):
     """Convert a NASA-formatted calendar date/time description into a datetime.
 
