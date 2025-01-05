@@ -17,6 +17,7 @@ iterator.
 You'll edit this file in Tasks 3a and 3c.
 """
 import operator
+import itertools
 
 
 class UnsupportedCriterionError(NotImplementedError):
@@ -71,6 +72,31 @@ class AttributeFilter:
     def __repr__(self):
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
+class DateFilter(AttributeFilter):
+    @classmethod
+    def get(cls,approach):
+        return approach.time.date()
+    
+class HazardousFilter(AttributeFilter):
+    @classmethod
+    def get(cls,approach):
+        return approach.neo.hazardous
+
+class VelocityFilter(AttributeFilter):
+    @classmethod
+    def get(cls,approach):
+        return approach.velocity
+
+class DistanceFilter(AttributeFilter):
+    @classmethod
+    def get(cls,approach):
+        return approach.distance
+
+class DiameterFilter(AttributeFilter):
+    @classmethod
+    def get(cls,approach):
+        return approach.neo.diameter
+
 
 def create_filters(
         date=None, start_date=None, end_date=None,
@@ -108,39 +134,40 @@ def create_filters(
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
-    query_dict = {}
-    if date != None :
-        query_dict['date'] = date
-    
-    if start_date != None:
-        query_dict['start_date'] = start_date
+    filters = []
+    if date != None:
+        filters.append(DateFilter(operator.eq, date))
+   
+    if start_date !=None :
+        filters.append(DateFilter(operator.ge, start_date))
 
-    if end_date !=None:
-        query_dict['end_date'] = end_date
+    if end_date !=None :
+        filters.append(DateFilter(operator.le,end_date))
+
+    if distance_min !=None :
+        filters.append(DistanceFilter(operator.ge, distance_min))
+
+    if distance_max != None :
+        filters.append(DistanceFilter(operator.le, distance_max))
 
     if velocity_min != None:
-        query_dict['velocity_min'] = velocity_min
-    
-    if velocity_max !=None :
-        query_dict['velocity_max'] = velocity_max
+        filters.append(VelocityFilter(operator.ge, velocity_min))
+
+    if velocity_max != None:
+        filters.append(VelocityFilter(operator.le, velocity_max))
 
     if diameter_min != None:
-        query_dict['diameter_min'] = diameter_min
-    
+        filters.append(DiameterFilter(operator.ge, diameter_min))
+
     if diameter_max != None:
-        query_dict['diameter_max'] = diameter_max
-    
-    if hazardous !=None:
-        query_dict['hazardous'] = hazardous
+        filters.append(DiameterFilter(operator.le, diameter_max))
 
-    if distance_min != None:
-        query_dict['distance_min'] = distance_min
-    
-    if distance_max != None:
-        query_dict['distance_max'] = distance_max 
+    if hazardous != None:
+        filters.append(HazardousFilter(operator.eq, hazardous))
 
-    return query_dict
+    # TODO: Decide how you will represent your filters.
+    return filters
+
 
 def limit(iterator, n=None):
     """Produce a limited stream of values from an iterator.
@@ -152,4 +179,5 @@ def limit(iterator, n=None):
     :yield: The first (at most) `n` values from the iterator.
     """
     # TODO: Produce at most `n` values from the given iterator.
-    return iterator
+
+    return itertools.islice(iterator, n)

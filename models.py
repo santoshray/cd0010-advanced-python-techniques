@@ -17,7 +17,7 @@ quirks of the data set, such as missing names and unknown diameters.
 
 You'll edit this file in Task 1.
 """
-from helpers import cd_to_datetime, datetime_to_str ,cd_to_date
+from helpers import cd_to_datetime, datetime_to_str
 
 
 class NearEarthObject:
@@ -150,3 +150,30 @@ class CloseApproach:
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+
+    def get_obj(self):
+        obj = {}
+        obj["datetime_utc"] = self.time_str
+        obj["distance_au"] = self.distance
+        obj["velocity_km_s"] = self.velocity
+        obj["neo"] = {}
+
+        obj["neo"]["designation"]=self.neo.designation
+        if self.neo.name != None :
+            obj["neo"]["name"]= self.neo.name 
+        else:
+            obj["neo"]["name"] = ""
+            print(type(self.neo.diameter))
+        if self.neo.diameter == float('nan'):
+            obj["neo"]["diameter_km"]= ""
+        else:
+            obj["neo"]["diameter_km"]= self.neo.diameter
+
+        print(obj["neo"]["diameter_km"])
+
+        if self.neo.hazardous == True:
+            obj["neo"]["potentially_hazardous"] = 'True'
+        else:
+            obj["neo"]["potentially_hazardous"] = 'False'
+
+        return obj

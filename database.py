@@ -119,7 +119,8 @@ class NEODatabase:
     
         return neo
 
-    def query(self, filters={}):
+
+    def query(self, filters=[]):
         """Query close approaches to generate those that match a collection of filters.
 
         This generates a stream of `CloseApproach` objects that match all of the
@@ -134,24 +135,15 @@ class NEODatabase:
         :return: A stream of matching `CloseApproach` objects.
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
-        filtered_ca_list =[]
-        if 'date' in filters.keys():
-            for approach in self._approaches:
-                day = approach.time_str.split(' ')[0]
-                if filters['date'].strftime("%Y-%m-%d").find(day) >=0:
-                    #print("approach_time={} , date = {}".format(day,filters['date']))
-                    filtered_ca_list.append(approach) 
-        if 'start_date' in filters.keys() and 'end_date' in filters.keys():
-            for approach in self._approaches:
-                approach_date = approach.date
-                if approach_date >= filters['start_date'] and approach_date < filters['end_date']:
-                    #print("approach_date={} ,start_date = {} , end_date ={}".format(approach_date,filters['start_date'],filters['end_date']))
-                    filtered_ca_list.append(approach) 
+        for approach in self._approaches:
+            if check_filter_condition(approach,filters):
+                yield approach
+        
+@staticmethod
+def check_filter_condition(approach,filters):
+    flag = True
+    for f in filters:
+        if  f(approach) == False:
+            return False
+    return flag
 
-        #if 'hazardous' in filters.keys():
-        #    if filters['hazardous'] != None and filters['hazardous'] == approach.hazardous:
-        #        filtered_ca_list.append(approach)
-            
-        #for approach in self._approaches:
-        #    yield approach
-        return filtered_ca_list

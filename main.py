@@ -395,28 +395,6 @@ def main():
         NEOShell(database, inspect_parser, query_parser, aggressive=args.aggressive).cmdloop()
 
 
-def dummy_main():
-    """Run the main script."""
-    parser, inspect_parser, query_parser = make_parser()
-    args = parser.parse_args()
-
-    # Extract data from the data files into structured Python objects.
-
-    #database = NEODatabase(load_neos(args.neofile), load_approaches(args.cadfile))
-
-    # Run the chosen subcommand.
-    if args.cmd == 'inspect':
-        print("pdes={} , name={} , verbose={}".format(args.pdes,args.name,args.verbose))
-        #inspect(database, pdes=args.pdes, name=args.name, verbose=args.verbose)
-    elif args.cmd == 'query':
-        print("query = {}".format(query))
-        #query(database, args)
-    elif args.cmd == 'interactive':
-        pass        
-        #NEOShell(database, inspect_parser, query_parser, aggressive=args.aggressive).cmdloop()
-
-
 if __name__ == '__main__':
     main()
-    #dummy_main()
 
